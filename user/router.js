@@ -7,10 +7,15 @@ const { toJWT } = require("../auth/jwt");
 //when we get a request to /user create a user and return response, also handle bad requests and errors
 router.post("/create", (request, response, next) => {
   //validate request(do we have email and pasword in req.body)
-  if (!request.body.email || !request.body.password) {
+  if (
+    !request.body.email ||
+    !request.body.password ||
+    !request.body.firstName ||
+    !request.body.lastName
+  ) {
     return response.send({
       status: "error",
-      error: "Missing email or password"
+      error: "Missing input data"
     });
   }
   const hashedPassword = bcrypt.hashSync(request.body.password, 10); //hash password using bcrypt
