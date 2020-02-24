@@ -4,6 +4,14 @@ const sequelize = require("../db");
 const User = sequelize.define(
   "user",
   {
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     email: {
       type: Sequelize.STRING,
       unique: true,
@@ -13,10 +21,10 @@ const User = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false
     }
-  },
-  {
-    timestamps: false,
-    tableName: "users"
   }
+  // {
+  //   timestamps: false,
+  //   tableName: "users"
+  // }
 );
 module.exports = User;
