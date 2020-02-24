@@ -21,7 +21,7 @@ router.post("/create", (request, response, next) => {
   const hashedPassword = bcrypt.hashSync(request.body.password, 10); //hash password using bcrypt
   const user = { ...request.body, password: hashedPassword };
   User.create(user)
-    .then(user => response.send(user))
+    .then(user => response.send(user.email))
     .catch(e => {
       // console.log(JSON.stringify(e.errors[0].message, null, 2));
       response.send({

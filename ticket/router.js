@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { Ticket } = require("./model");
+const auth = require("../auth/middleWare");
 
 const router = new Router();
 
@@ -21,7 +22,7 @@ router.get("/all/:id", (req, res, next) => {
   });
 });
 
-router.post("/create", (req, res, next) => {
+router.post("/create", auth, (req, res, next) => {
   console.log("REQUEST BODY TO CREATE TEAM", req.body);
   const description = req.body.description;
   const imageUrl = req.body.imageURL;
@@ -35,7 +36,7 @@ router.post("/create", (req, res, next) => {
     .catch(error => next(error)); //TODO: Give error back to client for display/res to user
 });
 
-router.post("/delete", (req, res, next) => {
+router.post("/delete", auth, (req, res, next) => {
   // console.log("DELETE", request.body);
   Ticket.findByPk(req.body.id)
     .then(ticket =>
