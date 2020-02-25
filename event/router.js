@@ -1,11 +1,18 @@
 const { Router } = require("express");
 const Event = require("./model");
 const auth = require("../auth/middleWare");
+const { Op } = require("sequelize");
 
 const router = new Router();
 
 router.get("/all", (req, res, next) => {
-  Event.findAll()
+  //As a customer I only want to see events that are not finished yet
+  const datetime = new Date();
+  Event.findAll({
+    where: {
+      endDate: { [Op.gte]: datetime }
+    }
+  })
     .then(Events => res.json(Events))
     .catch(error => next(error)); //TODO: Give error back to client for display/res to user
 });
