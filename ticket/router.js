@@ -23,7 +23,7 @@ router.get("/all/:id", (req, res, next) => {
 });
 
 router.post("/create", auth, (req, res, next) => {
-  console.log("REQUEST BODY TO CREATE TEAM", req.body);
+  console.log("REQUEST BODY TO CREATE TICKET", req.body);
   const description = req.body.description;
   const imageUrl = req.body.imageURL;
   const price = req.body.price;
@@ -51,22 +51,21 @@ router.post("/delete", auth, (req, res, next) => {
     });
 });
 
-// router.get("/products", (req, res, next) => {
-//   Product.findAll()
-//     .then(teams => res.json(teams))
-//     .catch(error => next(error));
-// });
-
-// router.get("/:id", (req, res, next) => {
-//   const teamId = parseInt(req.params.id);
-//   console.log(teamId);
-//   Team.findByPk(teamId).then(team => {
-//     if (!team) {
-//       res.status(404).send("Team not found!");
-//     } else {
-//       res.json(team);
-//     }
-//   });
-// });
+router.put("/update/:id", auth, (req, res, next) => {
+  console.log("UPDATE", req.body);
+  Ticket.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(ticket => {
+      if (ticket) {
+        ticket.update(req.body).then(ticket => res.json(ticket));
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch(next);
+});
 
 module.exports = router;
