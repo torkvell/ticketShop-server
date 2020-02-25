@@ -23,7 +23,7 @@ router.get("/all/:id", (req, res, next) => {
 });
 
 router.post("/create", auth, (req, res, next) => {
-  console.log("REQUEST BODY TO CREATE TEAM", req.body);
+  console.log("REQUEST BODY TO CREATE TICKET", req.body);
   const description = req.body.description;
   const imageUrl = req.body.imageURL;
   const price = req.body.price;
@@ -52,4 +52,24 @@ router.post("/delete", auth, (req, res, next) => {
     });
 });
 
+<<<<<<< HEAD
+=======
+router.put("/update/:id", auth, (req, res, next) => {
+  console.log("UPDATE", req.body);
+  Ticket.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(ticket => {
+      if (ticket) {
+        ticket.update(req.body).then(ticket => res.json(ticket));
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch(next);
+});
+
+>>>>>>> master
 module.exports = router;
