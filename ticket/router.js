@@ -52,8 +52,6 @@ router.post("/delete", auth, (req, res, next) => {
     });
 });
 
-<<<<<<< HEAD
-=======
 router.put("/update/:id", auth, (req, res, next) => {
   console.log("UPDATE", req.body);
   Ticket.findOne({
@@ -71,5 +69,4 @@ router.put("/update/:id", auth, (req, res, next) => {
     .catch(next);
 });
 
->>>>>>> master
 module.exports = router;
