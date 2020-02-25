@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { Event } = require("./model");
+const Event = require("./model");
 const auth = require("../auth/middleWare");
 
 const router = new Router();

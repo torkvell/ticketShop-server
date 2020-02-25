@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { Ticket } = require("./model");
+const Ticket = require("./model");
 const auth = require("../auth/middleWare");
 
 const router = new Router();
@@ -27,8 +27,9 @@ router.post("/create", auth, (req, res, next) => {
   const description = req.body.description;
   const imageUrl = req.body.imageURL;
   const price = req.body.price;
+  const eventId = req.body.eventId;
   const userId = req.body.userId;
-  Ticket.create({ description, imageUrl, price, userId })
+  Ticket.create({ description, imageUrl, price, userId, eventId })
     .then(ticket => {
       console.log("Created the ticket!");
       res.json(ticket);
@@ -50,23 +51,5 @@ router.post("/delete", auth, (req, res, next) => {
       res.json(req.body.id);
     });
 });
-
-// router.get("/products", (req, res, next) => {
-//   Product.findAll()
-//     .then(teams => res.json(teams))
-//     .catch(error => next(error));
-// });
-
-// router.get("/:id", (req, res, next) => {
-//   const teamId = parseInt(req.params.id);
-//   console.log(teamId);
-//   Team.findByPk(teamId).then(team => {
-//     if (!team) {
-//       res.status(404).send("Team not found!");
-//     } else {
-//       res.json(team);
-//     }
-//   });
-// });
 
 module.exports = router;
