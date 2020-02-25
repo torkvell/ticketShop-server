@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 const User = require("../user/model");
+const Event = require("../event/model");
 
 const Ticket = db.define("ticket", {
   /*The first argument to define is the table name(note: sequelize will give it plural s). The second argument 
@@ -22,7 +23,7 @@ const Ticket = db.define("ticket", {
  * This object can be used to set other options for the table. You can see more options in the Model definition page here:
  * http://docs.sequelizejs.com/manual/models-definition.html */
 
-User.hasMany(Ticket, { as: "user_id" });
-Ticket.belongsTo(User);
+Ticket.belongsTo(Event);
+User.hasMany(Ticket);
 
-module.exports = { Ticket };
+module.exports = Ticket;

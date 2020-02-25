@@ -27,7 +27,6 @@ const Event = db.define("event", {
  * Edit your model files and pass another argument to db.define. It should be an object with the property 'timestamps: false`.
  * This object can be used to set other options for the table. You can see more options in the Model definition page here:
  * http://docs.sequelizejs.com/manual/models-definition.html */
-User.hasMany(Event);
-Event.belongsTo(User);
+// Event.belongsTo(User);
 
-module.exports = { Event };
+module.exports = Event;
