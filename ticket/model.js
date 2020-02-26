@@ -23,7 +23,6 @@ const Ticket = db.define("ticket", {
  * This object can be used to set other options for the table. You can see more options in the Model definition page here:
  * http://docs.sequelizejs.com/manual/models-definition.html */
 
-Ticket.belongsTo(Event);
 User.hasMany(Ticket);
-
+Event.hasMany(Ticket);
 module.exports = Ticket;
