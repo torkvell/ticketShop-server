@@ -6,14 +6,20 @@ const Event = require("../event/model");
 const Ticket = db.define("ticket", {
   /*The first argument to define is the table name(note: sequelize will give it plural s). The second argument 
   is an object that defines the table fields. */
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   description: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   imageUrl: {
     type: Sequelize.STRING
   },
   price: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   }
 });
 

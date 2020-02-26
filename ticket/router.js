@@ -24,12 +24,13 @@ router.get("/all/:id", (req, res, next) => {
 
 router.post("/create", auth, (req, res, next) => {
   console.log("REQUEST BODY TO CREATE TICKET", req.body);
+  const title = req.body.title;
   const description = req.body.description;
   const imageUrl = req.body.imageURL;
   const price = req.body.price;
   const eventId = req.body.eventId;
   const userId = req.body.userId;
-  Ticket.create({ description, imageUrl, price, userId, eventId })
+  Ticket.create({ title, description, imageUrl, price, userId, eventId })
     .then(ticket => {
       console.log("Created the ticket!");
       res.json(ticket);
