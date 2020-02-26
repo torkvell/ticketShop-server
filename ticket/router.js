@@ -45,18 +45,14 @@ router.get("/all", (req, res, next) => {
         const percentageDifferenceCurrentTicket = Math.round(
           (differenceFromAverage / averageTicketPriceCurrentEvent) * 100
         );
-        console.log(
-          "percentage difference current ticket",
-          percentageDifferenceCurrentTicket
-        );
         if (percentageDifferenceCurrentTicket <= 0) {
           fraudRisk += Math.abs(percentageDifferenceCurrentTicket);
         } else if (percentageDifferenceCurrentTicket >= 10) {
           fraudRisk -= 10;
         } else {
           fraudRisk -= percentageDifferenceCurrentTicket;
-          console.log("im here");
         }
+        //if the ticket was added during business hours (9-17), deduct 10% from the risk, if not, add 10% to the risk
 
         return { ...ticketData, fraudRisk: fraudRisk };
       });
