@@ -15,7 +15,7 @@ router.get("/all/:id", (req, res, next) => {
     .catch(error => next(error)); //TODO: Give error back to client for display/res to user
 });
 
-router.get("/all/:id", (req, res, next) => {
+router.get("/user/:id", (req, res, next) => {
   const userId = parseInt(req.params.id);
   console.log(userId);
   Ticket.findAll({
