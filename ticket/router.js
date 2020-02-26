@@ -6,7 +6,65 @@ const router = new Router();
 
 router.get("/all", (req, res, next) => {
   Ticket.findAll()
-    .then(tickets => res.json(tickets))
+    .then(tickets => {
+      //FRAUD ALGORITHM
+      const newTickets = tickets.map(ticket => {
+        let fraudRisk = 0;
+        const ticketData = ticket.dataValues;
+        const currentTicketPrice = ticket.dataValues.price;
+        const currentTicketAuthorId = ticket.dataValues.userId;
+        const currentTicketEventId = ticket.dataValues.eventId;
+        const ticketsBySameAuthor = tickets.filter(
+          ticket => ticket.dataValues.userId === currentTicketAuthorId
+        );
+        //if the ticket is the only ticket of the author, add 10%
+        if (ticketsBySameAuthor.length <= 1) {
+          fraudRisk += 10;
+        }
+        /*if the ticket price is lower than the average ticket price for that event, that's a risk*/
+        //-->if a ticket is X% cheaper than the average price, add X% to the risk
+        //-->if a ticket is X% more expensive than the average price, deduct X% from the risk, with a maximum of 10% deduction*/
+        const totalPriceCurrentEventTickets = tickets.reduce(
+          (accumulator, currentTicket) => {
+            if (currentTicket.dataValues.eventId === currentTicketEventId) {
+              const price = parseInt(currentTicket.dataValues.price);
+              return accumulator + price;
+            } else {
+              return accumulator;
+            }
+          },
+          0
+        );
+        const amountOfTicketsCurrentEvent = tickets.filter(
+          ticket => ticket.dataValues.eventId === currentTicketEventId
+        ).length;
+        const averageTicketPriceCurrentEvent =
+          totalPriceCurrentEventTickets / amountOfTicketsCurrentEvent;
+        const differenceFromAverage =
+          currentTicketPrice - averageTicketPriceCurrentEvent;
+        const percentageDifferenceCurrentTicket = Math.round(
+          (differenceFromAverage / averageTicketPriceCurrentEvent) * 100
+        );
+        console.log(
+          "percentage difference current ticket",
+          percentageDifferenceCurrentTicket
+        );
+        if (percentageDifferenceCurrentTicket <= 0) {
+          fraudRisk += Math.abs(percentageDifferenceCurrentTicket);
+        } else if (percentageDifferenceCurrentTicket >= 10) {
+          fraudRisk -= 10;
+        } else {
+          fraudRisk -= percentageDifferenceCurrentTicket;
+          console.log("im here");
+        }
+
+        return { ...ticketData, fraudRisk: fraudRisk };
+      });
+
+      console.log("New tickets sent to client: ", newTickets);
+
+      res.json(newTickets);
+    })
     .catch(error => next(error)); //TODO: Give error back to client for display/res to user
 });
 
@@ -30,6 +88,7 @@ router.post("/create", auth, (req, res, next) => {
   const price = req.body.price;
   const eventId = req.body.eventId;
   const userId = req.body.userId;
+
   Ticket.create({ title, description, imageUrl, price, userId, eventId })
     .then(ticket => {
       console.log("Created the ticket!");
