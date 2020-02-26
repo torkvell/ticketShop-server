@@ -2,6 +2,7 @@ const { Router } = require("express");
 const Event = require("./model");
 const auth = require("../auth/middleWare");
 const { Op } = require("sequelize");
+const Ticket = require("../ticket/model");
 
 const router = new Router();
 
@@ -11,7 +12,12 @@ router.get("/all", (req, res, next) => {
   Event.findAll({
     where: {
       endDate: { [Op.gte]: datetime }
-    }
+    },
+    include: [
+      {
+        model: Ticket
+      }
+    ]
   })
     .then(Events => res.json(Events))
     .catch(error => next(error)); //TODO: Give error back to client for display/res to user

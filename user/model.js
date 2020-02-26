@@ -30,7 +30,5 @@ const User = sequelize.define(
   //   tableName: "users"
   // }
 );
-
 User.hasMany(Event);
-
 module.exports = User;
