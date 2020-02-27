@@ -2,11 +2,19 @@ const { Router } = require("express");
 const Ticket = require("./model");
 const auth = require("../auth/middleWare");
 const fraudAlgortihm = require("../fraudAlgorithm");
+const Comment = require("../comment/model");
 const router = new Router();
 
 router.get("/all/:id", (req, res, next) => {
   const eventId = parseInt(req.params.id);
-  Ticket.findAll({ where: { eventId: eventId } })
+  Ticket.findAll({
+    where: { eventId: eventId },
+    include: [
+      {
+        model: Comment
+      }
+    ]
+  })
     .then(tickets => {
       const newTickets = fraudAlgortihm(tickets);
       console.log("New tickets sent to client: ", newTickets);
