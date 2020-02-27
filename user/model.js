@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../db");
-const Ticket = require("../ticket/model");
+const Comment = require("../comment/model");
 const Event = require("../event/model");
 
 // sync model to database
@@ -31,4 +31,5 @@ const User = sequelize.define(
   // }
 );
 User.hasMany(Event);
+User.hasMany(Comment);
 module.exports = User;
