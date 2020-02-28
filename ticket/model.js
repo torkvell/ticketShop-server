@@ -21,6 +21,9 @@ const Ticket = db.define("ticket", {
   price: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  fraudRisk: {
+    type: Sequelize.INTEGER
   }
 });
 
