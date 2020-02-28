@@ -12,7 +12,13 @@ router.get("/all", (req, res, next) => {
   //As a customer I only want to see events that are not finished yet
   const datetime = new Date();
   //Before we send all event data to client --> calculate fraud risk and insert it into db
-  Ticket.findAll()
+  Ticket.findAll({
+    include: [
+      {
+        model: Comment
+      }
+    ]
+  })
     .then(tickets => {
       const newTickets = fraudAlgorithm(tickets);
       newTickets.map(ticket => {
