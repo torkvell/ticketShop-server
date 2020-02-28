@@ -55,4 +55,15 @@ router.post("/login", async (request, response) => {
   }
 });
 
+// router.get("/public/:id", (req, res, next) => {
+//   console.log(`request for pub user --------------->`, req);
+//   const userId = parseInt(req.params.id);
+//   User.findOne({ where: { id: userId } })
+//     .then(user => {
+//       const fullName = `${user.firstName} ${user.lastName}`;
+//       res.send(fullName);
+//     })
+//     .catch(error => next(error));
+// });
+
 module.exports = router;
