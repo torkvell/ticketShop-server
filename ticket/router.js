@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const Ticket = require("./model");
 const auth = require("../auth/middleWare");
-const fraudAlgortihm = require("../fraudAlgorithm");
 const Comment = require("../comment/model");
+const User = require("../user/model");
 const router = new Router();
 
 router.get("/all/:id", (req, res, next) => {
@@ -16,11 +16,9 @@ router.get("/all/:id", (req, res, next) => {
     ]
   })
     .then(tickets => {
-      const newTickets = fraudAlgortihm(tickets);
-      console.log("New tickets sent to client: ", newTickets);
-      res.json(newTickets);
+      res.json(tickets);
     })
-    .catch(error => next(error)); //TODO: Give error back to client for display/res to user
+    .catch(error => next(error));
 });
 
 router.get("/user/:id", (req, res, next) => {
@@ -44,12 +42,25 @@ router.post("/create", auth, (req, res, next) => {
   const eventId = req.body.eventId;
   const userId = req.body.userId;
 
-  Ticket.create({ title, description, imageUrl, price, userId, eventId })
-    .then(ticket => {
-      console.log("Created the ticket!");
-      res.json(ticket);
+  User.findOne({ where: { id: userId } })
+    .then(user => {
+      const ownerName = `${user.firstName} ${user.lastName}`;
+      Ticket.create({
+        title,
+        description,
+        imageUrl,
+        price,
+        userId,
+        eventId,
+        ownerName
+      })
+        .then(ticket => {
+          console.log("Created the ticket!");
+          res.json(ticket);
+        })
+        .catch(error => next(error));
     })
-    .catch(error => next(error)); //TODO: Give error back to client for display/res to user
+    .catch(error => next(error));
 });
 
 router.post("/delete", auth, (req, res, next) => {

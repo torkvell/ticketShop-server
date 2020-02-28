@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 const Ticket = require("../ticket/model");
 const Comment = require("../comment/model");
 const fraudAlgorithm = require("../fraudAlgorithm");
+const User = require("../user/model");
 
 const router = new Router();
 
