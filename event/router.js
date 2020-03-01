@@ -9,7 +9,8 @@ const User = require("../user/model");
 
 const router = new Router();
 
-router.get("/all", (req, res, next) => {
+//Get all events with all tickets and comments
+router.get("/", (req, res, next) => {
   //As a customer I only want to see events that are not finished yet
   const datetime = new Date();
   //Before we send all event data to client --> calculate fraud risk and insert it into db
@@ -48,47 +49,20 @@ router.get("/all", (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.get("/all/:id", (req, res, next) => {
-  const userId = parseInt(req.params.id);
-  console.log(userId);
-  Event.findAll({
-    where: {
-      userId: userId
-    }
-  }).then(Events => {
-    res.json(Events);
-  });
-});
-
-router.post("/create", auth, (req, res, next) => {
-  console.log("REQUEST BODY TO CREATE TEAM", req.body);
-  const name = req.body.name;
-  const imageUrl = req.body.imageUrl;
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
-  const description = req.body.description;
-  const userId = req.body.userId;
-  Event.create({ name, imageUrl, startDate, endDate, description, userId })
-    .then(Event => {
-      console.log("Created the Event!");
-      res.json(Event);
-    })
-    .catch(error => next(error));
-});
-
-router.post("/delete", auth, (req, res, next) => {
-  // console.log("DELETE", request.body);
-  Event.findByPk(req.body.id)
-    .then(Event =>
-      Event.destroy({
-        where: {
-          id: req.body.id
-        }
-      })
-    )
-    .then(Event => {
-      res.json(req.body.id);
-    });
-});
+// router.get("/all/:id", (req, res, next) => {
+//   const eventId = parseInt(req.params.id);
+//   Ticket.findAll({
+//     where: { eventId: eventId },
+//     include: [
+//       {
+//         model: Comment
+//       }
+//     ]
+//   })
+//     .then(tickets => {
+//       res.json(tickets);
+//     })
+//     .catch(error => next(error));
+// });
 
 module.exports = router;
