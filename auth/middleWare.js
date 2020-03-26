@@ -17,9 +17,7 @@ function auth(req, res, next) {
         })
         .catch(next);
     } catch (error) {
-      res.status(400).send({
-        message: `Error ${error.name}: ${error.message}`
-      });
+      res.status(400).send(`Error ${error.name}: ${error.message}`);
     }
   } else {
     res.status(401).send({
