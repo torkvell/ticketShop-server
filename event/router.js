@@ -21,7 +21,7 @@ router.get("/", async (req, res, next) => {
       ]
     });
     //Before we send all event data to client --> calculate fraud risk and insert it into db
-    const newTickets = fraudAlgorithm(tickets);
+    const newTickets = await fraudAlgorithm(tickets);
     newTickets.map(ticket => {
       Ticket.update(
         { fraudRisk: ticket.fraudRisk },
@@ -41,7 +41,7 @@ router.get("/", async (req, res, next) => {
     });
     if (events) return res.json(events);
   } catch (error) {
-    res.status(500).send("Something went wrong getting all event data");
+    res.status(500).send("Something went wrong");
   }
 });
 

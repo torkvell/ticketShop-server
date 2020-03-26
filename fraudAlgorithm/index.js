@@ -3,6 +3,7 @@ const fraudAlgorithm = tickets => {
   const newTickets = tickets.map(ticket => {
     let fraudRisk = 0;
     const ticketData = ticket.dataValues;
+    //we parse data to int to be 100% sure we're working with numbers and not strings during the calculation
     const currentTicketPrice = parseInt(ticket.dataValues.price);
     const currentTicketAuthorId = parseInt(ticket.dataValues.userId);
     const currentTicketEventId = parseInt(ticket.dataValues.eventId);
