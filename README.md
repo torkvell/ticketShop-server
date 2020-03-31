@@ -43,5 +43,5 @@ The calculated risk of a ticket depends on many factors. Make sure that the risk
 * As a logged in customer I want to be able to create events with a name, picture (logo), date and description
 * As a customer I can see some color (red/yellow/green) indicating the fraud risk of a ticket for all tickets in the all tickets list
 
-##Mockup
+## Mockup
 ![Mockup of some pages of the app](https://cd.sseu.re/final-assignment-mockup.png)
