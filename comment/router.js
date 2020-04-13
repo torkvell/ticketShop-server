@@ -8,7 +8,6 @@ const { Op } = require("sequelize");
 const router = new Router();
 
 router.post("/:ticketId", auth, async (req, res, next) => {
-  console.log("Im herer---------------->");
   try {
     const comment = { ...req.body };
     const authUserId = req.user.id;
