@@ -18,12 +18,15 @@ router.post("/", auth, async (req, res, next) => {
         price,
         userId: authUserId,
         eventId,
-        ownerName
+        ownerName,
       })
-        .then(ticket => {
+        .then((ticket) => {
           res.send(ticket);
         })
-        .catch(() => res.status(500).send("Ticket could not be created"));
+        .catch((err) => {
+          res.status(500).send("Ticket could not be created");
+          // console.log(err);
+        });
     } else {
       return res.status(400).send("Not authorized");
     }
@@ -39,11 +42,11 @@ router.put("/:ticketId", auth, async (req, res, next) => {
     if (user) {
       Ticket.findOne({
         where: {
-          id: req.params.ticketId
-        }
-      }).then(ticket => {
+          id: req.params.ticketId,
+        },
+      }).then((ticket) => {
         if (ticket) {
-          ticket.update(req.body).then(ticket => res.json(ticket));
+          ticket.update(req.body).then((ticket) => res.json(ticket));
         } else {
           res.status(404).send("Ticket not found");
         }
@@ -65,16 +68,16 @@ router.delete("/:ticketId", auth, (req, res, next) => {
         .then(() =>
           Ticket.destroy({
             where: {
-              id: ticketId
-            }
+              id: ticketId,
+            },
           })
         )
         .then(() => {
           res.json(ticketId);
         })
-        .catch(error => next(error));
+        .catch((error) => next(error));
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
 });
 
 module.exports = router;
