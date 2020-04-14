@@ -16,8 +16,8 @@ router.post("/signup", (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const user = { ...req.body, password: hashedPassword };
     User.create(user)
-      .then(user => res.send("User created"))
-      .catch(e => {
+      .then((user) => res.send("User created"))
+      .catch((e) => {
         // console.log(JSON.stringify(e.errors[0].message, null, 2));
         res.status(500).send("Something went wrong");
       });
@@ -33,7 +33,9 @@ router.post("/login", async (req, res) => {
       const userNew = {
         id: user.id,
         email: user.email,
-        token: toJWT({ id: user.id })
+        firstName: user.firstName,
+        lastName: user.lastName,
+        token: toJWT({ id: user.id }),
       };
       return res.send(userNew);
     } else {
@@ -51,8 +53,8 @@ router.get("/:userId/ticket", async (req, res, next) => {
     const userId = parseInt(req.params.userId);
     const tickets = await Ticket.findAll({
       where: {
-        userId: userId
-      }
+        userId: userId,
+      },
     });
     if (tickets) {
       return res.send(tickets);
@@ -69,13 +71,13 @@ router.get("/:userId/event", (req, res, next) => {
   const userId = parseInt(req.params.userId);
   Event.findAll({
     where: {
-      userId: userId
-    }
+      userId: userId,
+    },
   })
-    .then(events => {
+    .then((events) => {
       res.send(events);
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
 });
 
 module.exports = router;
